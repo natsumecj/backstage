@@ -70,20 +70,14 @@
       </el-table-column>
       <el-table-column label="操作" align="center" header-align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary"
-            >编辑</el-button
-          >
+          <el-button size="mini" type="primary">编辑</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="del(scope.$index,scope.row)"
+            @click="del(scope.$index, scope.row)"
             >删除</el-button
           >
-            <el-button
-                    size="mini"
-                    type="success"
-            >查看</el-button
-            >
+          <el-button size="mini" type="success">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -101,20 +95,29 @@ export default {
     };
   },
   methods: {
-      del(index,row){
-         this.$axios.req('api/article/delete',{
-             id:row._id
-         })
-             .then(res=>{
-                 if(res===200){
-                    this.$message({
-                        type: "success",
-                        message: "删除成功"
-                    })
-                     row.splice(index,1)
-                 }
-             })
-      }
+    del(index, row) {
+      console.log(index, row);
+      this.$axios
+        .req("api/article/delete", {
+          _id: row._id
+        })
+        .then(res => {
+          if (res === 200) {
+            this.$message({
+              type: "success",
+              message: "删除成功"
+            });
+          }
+        });
+      this.$axios.req('api/article/allArticle')
+          .then(res=>{
+              if(res){
+                  this.publish=res.data
+              }
+          }).catch(err=>{
+          console.log(err);
+      })
+    }
   },
   mounted() {
     this.$axios
