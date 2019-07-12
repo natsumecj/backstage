@@ -137,10 +137,18 @@
       <el-col :span="8">
         <el-card :body-style="{ padding: '20px' }">
           <img src="../assets/t01389c26232ed1a364.jpg" class="image" />
-          <div style="padding: 8px;" v-for="(item,index) in progresses" :key="item.name">
-            <div>{{item.name}}</div>
-            <el-progress :percentage="item.progress*100" v-if="item.progress===1" status="success"></el-progress>
-            <el-progress :percentage="item.progress*100" v-else></el-progress>
+          <div
+            style="padding: 8px;"
+            v-for="(item, index) in progresses"
+            :key="item.name"
+          >
+            <div>{{ item.name }}</div>
+            <el-progress
+              :percentage="item.progress * 100"
+              v-if="item.progress === 1"
+              status="success"
+            ></el-progress>
+            <el-progress :percentage="item.progress * 100" v-else></el-progress>
           </div>
         </el-card>
       </el-col>

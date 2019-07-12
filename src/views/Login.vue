@@ -5,6 +5,7 @@
         <div>
           <el-card class="box-card">
             <el-form
+              label-position="left"
               :model="ruleForm"
               status-icon
               :rules="rules"
@@ -26,11 +27,11 @@
                   autocomplete="off"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="请输入验证码" prop="cap">
+              <el-form-item label="请输入验证码" prop="captch">
                 <el-input
                   style="width: 150px;float: left"
                   v-model="ruleForm.captch"
-                  autocomplete="off"
+                  status-icon
                 ></el-input>
                 <div
                   v-html="captchas"
@@ -73,7 +74,7 @@ export default {
           { required: true, message: "密码不能为空", trigger: "blur" },
           { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
         ],
-        capch: [{ required: true, message: "验证码不能为空", trigger: "blur" }]
+        captch: [{ required: true, message: "验证码不能为空", trigger: "blur" }]
       }
     };
   },
@@ -107,6 +108,17 @@ export default {
             sessionStorage.setItem(
               "code",
               JSON.stringify(this.ruleForm.captch)
+            );
+            let date = new Date();
+            let y = date.getFullYear();
+            let m = date.getMonth() + 1;
+            let d = date.getDate();
+            let h = date.getHours();
+            let f = date.getMinutes();
+            let s = date.getSeconds();
+            localStorage.setItem(
+              "date",
+              y + "年" + m + "月" + d + "日" + h + "时" + f + "分" + s + "秒"
             );
             this.$router.push("/home");
           }

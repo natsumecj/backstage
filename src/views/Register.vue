@@ -4,6 +4,7 @@
       <div style="width: 500px;padding: 300px 600px">
         <el-card class="box-card">
           <el-form
+            label-position="left"
             :model="ruleForm"
             status-icon
             :rules="rules"
@@ -59,9 +60,21 @@ export default {
   },
   methods: {
     login() {
-      this.$router.push("/");
+      this.$router.push("/login");
     },
     registers() {
+      let reg = new RegExp(/[\u4e00-\u9fa5]/)
+      if (this.ruleForm.name.match(reg)) {
+        this.$message({
+          type: 'warning',
+          message: '用户名不能为中文'
+        })
+        this.ruleForm.name = ''
+        this.ruleForm.password = ''
+      }
+      if(this.ruleForm.password.length<6){
+        return
+      }
       this.$axios
         .req("api/user/register", {
           username: this.ruleForm.name,
@@ -96,7 +109,7 @@ export default {
   },
   mounted() {},
   created() {
-    this.register=this.$lodash.debounce(this.registers,350)
+    this.register = this.$lodash.debounce(this.registers, 350);
   },
   filters: {},
   computed: {},

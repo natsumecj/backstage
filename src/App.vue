@@ -1,24 +1,26 @@
 <template>
   <div id="app">
-    <router-view v-if="$route.path==='/'||$route.path==='/register'"/>
+    <router-view
+      v-if="$route.path === '/login' || $route.path === '/register'"
+    />
     <el-container v-else>
       <el-header><navigation></navigation></el-header>
       <el-container>
         <el-aside width="200px"><asides></asides></el-aside>
-        <el-main><router-view/></el-main>
+        <el-main><router-view /></el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 <script>
-  import navigation from "./views/Navigation"
-  import asides from "./views/Asides"
-  export default {
-    components: {
-      navigation,
-      asides
-    }
+import navigation from "./views/Navigation";
+import asides from "./views/Asides";
+export default {
+  components: {
+    navigation,
+    asides
   }
+};
 </script>
 <style lang="scss">
 /*#app {*/
@@ -38,7 +40,8 @@
 /*    }*/
 /*  }*/
 /*}*/
-.el-header, .el-footer {
+.el-header,
+.el-footer {
   background-color: #244c6e;
   color: #333;
   text-align: center;
@@ -53,7 +56,7 @@
 }
 
 .el-main {
-  background-color: #E9EEF3;
+  background-color: #e9eef3;
   color: #333;
   /*text-align: center;*/
   /*line-height: 160px;*/

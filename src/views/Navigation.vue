@@ -9,7 +9,7 @@
         >
         <el-col :span="8" :offset="12"
           ><div style="color: white; font-size: 18px">
-            早上好，亲爱的{{ name }} 上次登录时间：2019年7月4号14时26分36秒
+            早上好，亲爱的{{ name }} 本次登录时间：{{ date }}
           </div></el-col
         >
       </el-row>
@@ -24,12 +24,14 @@ export default {
   props: {},
   data() {
     return {
-      name: ""
+      name: "",
+      date: ""
     };
   },
   methods: {},
   mounted() {
     this.name = localStorage.getItem("user");
+    this.date = localStorage.getItem("date");
   },
   created() {},
   filters: {},

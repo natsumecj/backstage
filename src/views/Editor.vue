@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="24" style="background-color: #53996e;">
         <div style="float: right;margin-right: 20px">
-          <el-button type="danger">查看</el-button>
+          <el-button type="danger" @click="returns">返回</el-button>
           <el-button type="primary" @click="publish">发布</el-button>
         </div>
       </el-col>
@@ -102,6 +102,7 @@ export default {
   props: {},
   data() {
     return {
+      ids: "",
       category: [
         { name: "Vue" },
         { name: "React" },
@@ -147,12 +148,10 @@ export default {
     };
   },
   methods: {
-    publishes() {
-      if(this.ruleForm.date===''){
-        this.ruleForm.date=this.$moment(new Date())
-      }
+    publish() {
       this.$axios
-        .req("api/article/create", {
+        .req("api/article/update", {
+          id: this.ids,
           title: this.ruleForm.title,
           abstract: this.ruleForm.abstract,
           author: this.ruleForm.author,
@@ -160,37 +159,43 @@ export default {
           source: this.ruleForm.source,
           star: this.ruleForm.star,
           text: this.ruleForm.text,
-          date: this.$moment(this.ruleForm.date).format("YYYY年MM月DD日 HH时mm分ss秒")
+          date: this.ruleForm.date
         })
         .then(res => {
-          if (res.code === 200) {
+          if (res) {
             this.$message({
               type: "success",
-              message: "发布成功"
+              message: "编辑成功"
             });
             this.$router.push("/published");
-          }
-          if (res.code === 500) {
-            this.$message({
-              type: "error",
-              message: "请填完表格"
-            });
           }
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    returns() {
+      this.$router.go(-1);
     }
   },
   mounted() {
-    console.log(this.$moment(this.ruleForm.date).format("YYYY年MM月DD日 HH时mm分ss秒"));
+    this.ids = this.$route.query._id;
+    this.$axios
+      .req("api/article/article", {
+        _id: this.ids
+      })
+      .then(res => {
+        if (res) {
+          this.ruleForm = res.data;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
-  created() {
-    this.publish = this.$lodash.debounce(this.publishes, 350);
-  },
+  created() {},
   filters: {},
-  computed: {
-  },
+  computed: {},
   watch: {},
   directives: {}
 };

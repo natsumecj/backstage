@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-table :data="publish" style="width: 100%" border stripe>
+    <el-table
+      :data="publish.slice((val1 - 1) * val, val1 * val)"
+      style="width: 100%"
+      border
+      stripe
+    >
       <el-table-column
         type="index"
         width="50"
@@ -15,7 +20,7 @@
         header-align="center"
       >
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.title }}</span>
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -25,7 +30,7 @@
         header-align="center"
       >
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.author }}</span>
+          <span>{{ scope.row.author }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -35,7 +40,7 @@
         header-align="center"
       >
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.category }}</span>
+          <span>{{ scope.row.category }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -45,7 +50,7 @@
         header-align="center"
       >
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.source }}</span>
+          <span>{{ scope.row.source }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -55,7 +60,12 @@
         header-align="center"
       >
         <template slot-scope="scope">
-          <span style="margin-left: 10px">{{ scope.row.star }}</span>
+          <el-rate
+            :value="parseInt(scope.row.star)"
+            disabled
+            text-color="#ff9900"
+          >
+          </el-rate>
         </template>
       </el-table-column>
       <el-table-column
@@ -70,28 +80,44 @@
       </el-table-column>
       <el-table-column label="操作" align="center" header-align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary">编辑</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="editor(scope.$index, scope.row)"
+            >编辑</el-button
+          >
           <el-button
             size="mini"
             type="danger"
             @click="del(scope.$index, scope.row)"
             >删除</el-button
           >
-          <el-button size="mini" type="success">查看</el-button>
+          <el-button
+            size="mini"
+            type="success"
+            @click="views(scope.$index, scope.row)"
+            >查看</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
+    <pagination :publish="publish" @send="send" @send1="send1"></pagination>
   </div>
 </template>
 
 <script>
+import pagination from "../components/Pagination";
 export default {
   name: "Published",
-  components: {},
+  components: {
+    pagination
+  },
   props: {},
   data() {
     return {
-      publish: []
+      publish: [],
+      val: 10,
+      val1: 1
     };
   },
   methods: {
@@ -109,14 +135,41 @@ export default {
             });
           }
         });
-      this.$axios.req('api/article/allArticle')
-          .then(res=>{
-              if(res){
-                  this.publish=res.data
-              }
-          }).catch(err=>{
+      this.$axios
+        .req("api/article/allArticle")
+        .then(res => {
+          if (res) {
+            this.publish = res.data;
+          }
+        })
+        .catch(err => {
           console.log(err);
-      })
+        });
+    },
+    editor(index, row) {
+      this.$router.push({
+        name: "editor",
+        query: {
+          _id: row._id
+        }
+      });
+    },
+    views(index, row) {
+      // console.log(row);
+      this.$router.push({
+        name: "views",
+        query: {
+          id: row._id
+        }
+      });
+    },
+    send(val) {
+      this.val = val;
+      console.log(this.val + "我是每页多少条");
+    },
+    send1(val) {
+      this.val1 = val;
+      console.log(this.val1 + "我是第几页");
     }
   },
   mounted() {

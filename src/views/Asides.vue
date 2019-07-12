@@ -19,7 +19,7 @@
             <i class="el-icon-menu"></i>
             <span slot="title">已发布</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="3" @click="statistics">
             <i class="el-icon-menu"></i>
             <span slot="title">统计</span>
           </el-menu-item>
@@ -27,19 +27,19 @@
             <i class="el-icon-menu"></i>
             <span slot="title">发表文章</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="2" @click="tabs">
             <i class="el-icon-menu"></i>
             <span slot="title">标签页</span>
           </el-menu-item>
-          <el-menu-item index="6">
+          <el-menu-item index="6" @click="excel">
             <i class="el-icon-document"></i>
             <span slot="title">导出Excel</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="4" @click="uploads">
             <i class="el-icon-setting"></i>
             <span slot="title">图片上传</span>
           </el-menu-item>
-          <el-menu-item index="8">
+          <el-menu-item index="8" @click="exit">
             <i class="el-icon-menu"></i>
             <span slot="title">退出系统</span>
           </el-menu-item>
@@ -64,14 +64,29 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    home(){
-        this.$router.push("/home")
-      },
-    publishing(){
-      this.$router.push('/publishing')
+    home() {
+      this.$router.push("/");
     },
-    published(){
-      this.$router.push('/published')
+    publishing() {
+      this.$router.push("/publishing");
+    },
+    published() {
+      this.$router.push("/published");
+    },
+    exit() {
+      this.$router.push("/exit");
+    },
+    excel() {
+      this.$router.push("/excel");
+    },
+    uploads(){
+      this.$router.push("/upload")
+    },
+    tabs(){
+      this.$router.push('/tab')
+    },
+    statistics(){
+      this.$router.push("/statistics")
     }
   },
   mounted() {},
@@ -83,5 +98,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
